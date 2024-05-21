@@ -1,5 +1,6 @@
 import { Chess } from "chess.js"
 import WebSocket from "ws"
+import { GAMEOVER } from "./messages"
 export class Game{
     public playerOne:WebSocket
     public playerTwo:WebSocket
@@ -18,7 +19,16 @@ export class Game{
             this.board.move(move)
         } catch (error) {
             console.log(error)
-        }
+            return
+        } 
         
+        if(this.board.isGameOver()){
+            this.playerOne.emit(JSON.stringify({
+                type:GAMEOVER,
+                payload:{
+                    winner: this.board.turn()==="w" ? "black" : "white"
+                }
+            }))
+        }
     }
 }
