@@ -1,12 +1,12 @@
-import {WebSocketServer} from "ws"
+import { WebSocketServer } from "ws";
+import GameManger from "./GameManger";
 
-//initilize websocket port 
+//initilize websocket port
 
-const wss = new WebSocketServer({port:8080})
-
-wss.on("connection",(ws)=>{
-  ws.on("message",(data)=>{
-    console.log(data.toString("utf-8"))
-  })
-  ws.send("Hai welcome to chess game")
-})
+const wss = new WebSocketServer({ port: 8080 });
+const gameManger = new GameManger();
+wss.on("connection", (ws) => {
+  console.log("Log")
+  gameManger.addUser(ws)
+  ws.send("Hai welcome to chess game");
+});
